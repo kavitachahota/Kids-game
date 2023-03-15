@@ -13,7 +13,7 @@
 			$password = $_POST['password'];
 
 			// Check if the username and password are correct
-			// (You would need to replace this with code that checks the database)
+			// (need to replace this with code that checks the database)
 			if ($username === 'admin' && $password === 'password') {
 				// Start the session
 				$_SESSION['username'] = $username;
