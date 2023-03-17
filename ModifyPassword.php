@@ -23,5 +23,25 @@
     <form method="POST" action="login.php">
         <button type="submit" name="signin">Sign-In</button>
     </form>
+
+
+	<?php
+		if(isset($_POST['modify'])) {
+			$existing_username = $_POST['existing-username'];
+			$new_password = $_POST['new-password'];
+			$confirm_new_password = $_POST['confirm-new-password'];
+
+			// Perform password modification logic here.
+
+			echo "Password modified successfully!";
+		}
+		elseif(isset($_POST['sign-in'])) {
+
+			// Redirect to the login form.
+			header("Location: login.php");
+			exit();
+		}
+	?>
+	
 </body>
 </html>
