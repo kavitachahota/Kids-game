@@ -31,17 +31,18 @@
 
 		if (isset($_POST['signup'])) {
 			// Redirect to the registration form
-			header('Location: registration-form.php');
+			header('Location: signUp.php');
 			exit;
 		}
 	?>
+	
 	<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 		<label for="username">Username:</label>
 		<input type="text" id="username" name="username"><br><br>
 		<label for="password">Password:</label>
 		<input type="password" id="password" name="password"><br><br>
 		<input type="submit" value="Connect" name="connect">
-		<input type="submit" value="Sign-Up" name="signup">
+		<input type="submit" value="SignUp" name="signup">
 	</form>
 </body>
 </html>

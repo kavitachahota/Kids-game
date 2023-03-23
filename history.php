@@ -38,10 +38,10 @@
 							<td>" . $row['id'] . "</td>
 							<td>" . $row['fName'] . " " . $row['lName'] . "</td>
 							<td>" . $row['result']."</td>
-							<td>".$row['livesUsed']."</td>";
+							<td>".$row['livesUsed']."</td></tr>";
+							
 				}
 			echo <<<END
-				</tr>
 			</tbody>
 		</table>
 		END;
