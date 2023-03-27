@@ -1,49 +1,72 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-	//
-	<title>Login Form</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Login</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
-	<h2>Login</h2>
 	<?php
+		include "navBar.php";
+		include "connect.php";
+		include "functions.php";
+
 		session_start();
 
-		if (isset($_POST['connect'])) {
-			$username = $_POST['username'];
-			$password = $_POST['password'];
+		if(isset($_POST["signInBtn"])){
+			$username = $_POST["inputUsername"];
+			$password = $_POST["inputPassword"];
 
-			// Check if the username and password are correct
-			// (need to replace this with code that checks the database)
-			if ($username === 'admin' && $password === 'password') {
-				// Start the session
-				$_SESSION['username'] = $username;
+			if($username == ""){
+				echo "<script>alert(\"" . getErrorMessages("no-username") . "\")</script>";
+			}
+			elseif($password == ""){
+				echo "<script>alert(\"" . getErrorMessages("no-pass") . "\")</script>";
+			}
+			else{
+				$sql = "SELECT * FROM player p JOIN authenticator a ON p.registrationOrder = a.registrationOrder WHERE userName=\"$username\" AND passCode=\"$password\"";
 
-				// Redirect to the first level game
-				header('Location: first-level-game.php');
-				exit;
-			} else {
-				// Display an error message
-				echo "Sorry, you entered a wrong username!<br>";
-				echo "<a href='reset-password.php'>Forgotten? Please, change your password</a>";
+				$result = $connection->query($sql);
+
+				if($result->num_rows > 0){
+					$row = $result->fetch_assoc();
+					$_SESSION["player_id"] = $row["registrationOrder"];
+					header('Location: level1.php');
+				}
+				else{
+					echo "<script>alert(\"Invalid username or password.\")</script>";
+				}
 			}
 		}
 
-		if (isset($_POST['signup'])) {
-			// Redirect to the registration form
-			header('Location: signUp.php');
-			exit;
-		}
+		$connection->close();
+
 	?>
-	
-	<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-		<label for="username">Username:</label>
-		<input type="text" id="username" name="username"><br><br>
-		<label for="password">Password:</label>
-		<input type="password" id="password" name="password"><br><br>
-		<input type="submit" value="Connect" name="connect">
-		<input type="submit" value="SignUp" name="signup">
+
+	<h2 class="text-center">Sign-In</h2>
+	<form class="container" method="POST" action="#">
+		<div class="mb-3">
+			<label for="inputUsername" class="form-label">Username</label>
+			<input type="text" class="form-control" id="inputUsername" name="inputUsername">
+		</div>
+		<div class="mb-3">
+			<label for="inputPassword" class="form-label">Password</label>
+			<input type="password" class="form-control" id="inputPassword" name="inputPassword">
+		</div>
+		<button type="submit" class="btn btn-primary" name="signInBtn" id="signInBtn">Sign-In</button>
+		<a href="signup.php"><button type="button" class="btn btn-primary" name="signUpBtn" id="signUpBtn"> Sign-Up</button></a>
 	</form>
+
+
+	<?php
+
+		include "footer.php";
+	?>
+
+
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
 </html>
-
