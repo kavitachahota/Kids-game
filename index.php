@@ -37,6 +37,7 @@
 				else{
 					echo "<script>alert(\"Invalid username or password.\")</script>";
 				}
+				
 			}
 		}
 
