@@ -10,98 +10,42 @@
 
 	<?php
 		include "navBar.php";
-		include "connect.php";
-		include "functions.php";
 	?>
+	
 
 	<h2 class="text-center">Sign Up</h2>
-	<form class="container" method="POST" action="#">
+	<form class="container" method="POST" action="signupResult.php">
 		<div class="mb-3">
 			<label for="inputFirstName" class="form-label">First Name</label>
-			<input type="text" class="form-control" id="inputFirstName" name="inputFirstName" value="">
+			<input type="text" class="form-control" id="inputFirstName" name="inputFirstName" value="<?php echo $inputFirstName; ?>">
+			<span id="inputFirstName_span"></span>
 		</div>
 		<div class="mb-3">
 			<label for="inputLastName" class="form-label">Last Name</label>
-			<input type="text" class="form-control" id="inputLastName" name="inputLastName" value="">
+			<input type="text" class="form-control" id="inputLastName" name="inputLastName" value="<?php echo $inputLastName ?>">
+			<span id="inputLastName_span"></span>
 		</div>
 		<div class="mb-3">
 			<label for="inputUsername" class="form-label">Username</label>
-			<input type="text" class="form-control" id="inputUsername" name="inputUsername">
+			<input type="text" class="form-control" id="inputUsername" name="inputUsername"
+			value="<?php echo $inputUsername ?>">
+			<span id="inputUsername_span"></span>
 		</div>
 		<div class="mb-3">
 			<label for="inputPassword" class="form-label">Password</label>
 			<input type="password" class="form-control" id="inputPassword" name="inputPassword">
+			<span id="inputPassword_span"></span>
 		</div>
 		<div class="mb-3">
 			<label for="inputConfirmPassword" class="form-label">Confirm Password</label>
 			<input type="password" class="form-control" id="inputConfirmPassword" name="inputConfirmPassword">
+			<span id="inputConfirmPassword_span"></span>
 		</div>
 		<button type="submit" class="btn btn-primary" name="createBtn" id="createBtn">Create</button>
 		<a href="index.php"><button type="button" class="btn btn-primary" name="signInBtn" id="signInBtn"> Sign-In</button></a>
 	</form>
 
-
 	<?php
-
-		if(isset($_POST["createBtn"])){
-			$inputFirstName = $_POST["inputFirstName"];
-			$inputLastName = $_POST["inputLastName"];
-			$inputUsername = $_POST["inputUsername"];
-			$inputPassword = $_POST["inputPassword"];
-			$inputConfirmPassword = $_POST["inputConfirmPassword"];
-
-			// is empty
-			if($inputFirstName == ""){
-				echo "<script>alert(\"" . getErrorMessages("no-first-name") . "\")</script>";
-			}
-			elseif($inputLastName == ""){
-				echo getErrorMessages("no-last-name");
-			}
-			elseif($inputUsername == ""){
-				echo getErrorMessages("no-username");
-			}
-			elseif($inputPassword == ""){
-				echo getErrorMessages("no-pass");
-			}
-			elseif($inputConfirmPassword == ""){
-				echo getErrorMessages("no-confirm-pass");
-			}
-			else{
-				// check username exist
-				if(checkUsername($inputUsername, $connection)){
-					echo getErrorMessages("username-exist");
-				}
-				else{
-					// password and confirm password
-					if(matchPassword($inputPassword, $inputConfirmPassword)){
-						// ok
-						$sql = "INSERT INTO player (fName, lName, userName, registrationTime, registrationOrder) VALUES (\"$inputFirstName\", \"$inputLastName\", \"$inputUsername\", CURRENT_TIMESTAMP, NULL)";
-						
-						if($connection->query($sql)  === TRUE){
-							$last_id = mysqli_insert_id($connection); # getting last auto increament id
-							
-							$sql = "INSERT INTO authenticator(passCode, registrationOrder) VALUES (\"$inputPassword\", $last_id)";
-							if($connection->query($sql)){
-								echo "Added successfully";
-							}
-							else{
-								echo "error while adding to authenticator";
-							}
-						}
-						else{
-							echo "error while adding to player";
-							echo "Error: " . $sql . "<br>" . $connection->error;
-						}
-					}
-					else{
-						echo getErrorMessages("no-same-pass");
-					}
-				}
-			}
-		}
-
-		$connection->close();
-
 		include "footer.php";
 	?>
 

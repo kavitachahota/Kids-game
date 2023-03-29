@@ -12,7 +12,7 @@
 		include "connect.php";
 		include "functions.php";
 
-		session_start();
+		#session_start();
 
 		if(isset($_POST["signInBtn"])){
 			$username = $_POST["inputUsername"];
@@ -26,6 +26,8 @@
 			}
 			else{
 				$sql = "SELECT * FROM player p JOIN authenticator a ON p.registrationOrder = a.registrationOrder WHERE userName=\"$username\" AND passCode=\"$password\"";
+
+				$_SESSION['username'] = $username;
 
 				$result = $connection->query($sql);
 
