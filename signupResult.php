@@ -18,7 +18,7 @@ if(isset($_POST["createBtn"])){
 
     // is empty
     if($inputFirstName == ""){
-        echo "<script>alert(\"" . getErrorMessages("no-first-name") . "\")</script>";
+        echo "<script>alert(\"" . getErrorMessages("no-first-name") . "\")</script>";      
     }
     elseif($inputLastName == ""){
         echo "<script>alert(\"" . getErrorMessages("no-last-name") . "\")</script>";
@@ -48,19 +48,18 @@ if(isset($_POST["createBtn"])){
                     
                     $sql = "INSERT INTO authenticator(passCode, registrationOrder) VALUES (\"$inputPassword\", $last_id)";
                     if($connection->query($sql)){
-                        echo "Added successfully";
+                        echo "<script>alert(\"" . "Account created successfully.\nRedirecting to Login page." . "\")</script>";
                     }
                     else{
-                        echo "error while adding to authenticator";
+                        echo "<script>alert(\"" . "Account cannot be created. Please try again" . "\")</script>";
                     }
                 }
                 else{
-                    echo "error while adding to player";
-                    echo "Error: " . $sql . "<br>" . $connection->error;
+                    echo "<script>alert(" . "Account cannot be created. Please try again" . ")</script>";
                 }
             }
             else{
-                echo getErrorMessages("no-same-pass");
+                echo "<script>alert(" . getErrorMessages("no-same-pass") . ")</script>";
             }
         }
     }
