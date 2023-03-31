@@ -23,27 +23,34 @@
 			<div class="question-values">
 			<?php
 				
-				$resultArray = array();
+				$array = array();
 
 				$characters = "abcdefghijklmnopqrstuvwxyz";
 				$randomString = '';
+
+				function get_first_and_last_letters($letters) {
+					sort($letters); // Sort the letters in alphabetical order
+					$first_letter = $letters[0]; // Get the first letter
+					$last_letter = $letters[count($letters) - 1]; // Get the last letter
+					return array($first_letter, $last_letter); // Return the first and last letters as an array
+				  }
+				  
 				
-				for ($i = 0; $i < 6; $i++) {
-					do{
-						$index = rand(0, strlen($characters) - 1);
-					}while(in_array($characters[$index], $resultArray));
-					$randomString .= " " . $characters[$index];
-					array_push($resultArray, $characters[$index]);
-				}
+				  $letters = array('c', 'a', 'f', 'b', 'e', 'd');
+				  list($first_letter, $last_letter) = get_first_and_last_letters($letters);
+				  echo "First letter: " . $first_letter . "\n"; // Output: "First letter: a"
+				  echo "Last letter: " . $last_letter . "\n"; // Output: "Last letter:
+				
+				/*
 
 				echo $randomString;
 				echo "<br>";
-				#print_r($resultArray);
+			    print_r($first_letter);
 
-				// sorting the array in ascending order
-				sort($resultArray, SORT_STRING); 
+			
+				sort($array, SORT_STRING); 
 
-				print_r($resultArray);
+				print_r($last_letter);*/
 			?>
 			</div>
 		</div>
