@@ -34,7 +34,7 @@
 				if($result->num_rows > 0){
 					$row = $result->fetch_assoc();
 					$_SESSION["player_id"] = $row["registrationOrder"];
-					header('Location: level1.php');
+					header('Location: level1');
 				}
 				else{
 					echo "<div class='alert alert-danger' role='alert'>Sorry, you entered the wrong username or password. Please try again or <a href='ModifyPassword.php'>reset your password</a>.</div>";
