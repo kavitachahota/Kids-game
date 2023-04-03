@@ -37,7 +37,7 @@
 					header('Location: level1.php');
 				}
 				else{
-					echo "<script>alert(\"Invalid username or password.\")</script>";
+					echo "<div class='alert alert-danger' role='alert'>Sorry, you entered the wrong username or password. Please try again or <a href='ModifyPassword.php'>reset your password</a>.</div>";
 				}
 				
 			}
@@ -59,6 +59,8 @@
 		</div>
 		<button type="submit" class="btn btn-primary" name="signInBtn" id="signInBtn">Sign-In</button>
 		<a href="signup.php"><button type="button" class="btn btn-primary" name="signUpBtn" id="signUpBtn"> Sign-Up</button></a>
+		
+
 	</form>
 
 
