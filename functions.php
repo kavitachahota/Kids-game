@@ -30,7 +30,8 @@
             "no-pass" => "Please enter the Password Field",
             "no-confirm-pass" => "Please enter the Confirm Password Field",
             "username-exist" => "Username already exists. Please try again.",
-            "no-same-pass" => "Please enter same password in both the field"
+            "no-same-pass" => "Please enter same password in both the field",
+            "username-no-exist" => "Username not exist.Please try again"
         );
 
         return $messages[$error];

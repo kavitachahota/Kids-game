@@ -1,93 +1,66 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Level 2</title>
+	<title>Kids Game|level6</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-	<style>
-		input[type=text]{
-			width: 20px;
-		}
-	</style>
-  </head>
-  <body>
+</head>
 
-	<?php
-		include "navBar.php";
-	?>
+<body>
 
-  
-	<div class="wrapper container">
-		<div class="heading text-center"><h2>LEVEL 6</h2></div>
-		<div class="question-block">
-			<div class="question">Identify minimum and maximum numbers from a set of numbers</div>
-			<div class="question-values">
-			<?php
-				
-				$array = array();
 
-				$numbers = "0-100";
-				$randomString = '';
+	<h2 class="text-center">Level 6</h2>
+</body>
 
-                //Identify maximum numbers
-				function MaxNum($array){
+<?php
+session_start();
 
-                $n = count($array);
-                $max = $array[0];
-                for($i = 1; $i< $n; $i++)
-                if($max < $array[$i])
-                $max = $array[$i];
-                return $max;
-                }
+// generate random numbers
+$numbers = array();
+for ($i = 0; $i < 6; $i++) {
+    $numbers[] = rand(0, 100);
+}
 
-                //identify minimum numbers
-                function MinNum($array){
+// store the numbers in session
+$_SESSION['numbers'] = $numbers;
 
-                    $n = count($array);
-                    $min = $array[0];
-                    for($i = 1; $i< $n; $i++)
-                    if($min > $array[$i])
-                    $min = $array[$i];
-                    return $min;
-                    }
+// check if the form has been submitted
+if (isset($_POST['submit'])) {
+    $min_number = $_POST['min_number'];
+    $max_number = $_POST['max_number'];
+    
+    // check if the user entered the correct numbers
 
-				$array =array (12,3,1,14,65,20);
-                echo "MaxNum number is: ".(MaxNum($array))."<br>";
-                echo("\n");
-                echo "MinNum number is: ".(MinNum($array));
+    if ($min_number == min($numbers) && $max_number == max($numbers)) {
+      
+        echo "<p>Congratulations, you identified the minimum and maximum numbers!</p>";
+        echo "<button><a href='level6.php'>Play Again</a></button>";
+        echo "<button><a href='Index.php'>Login</a></button>";
+        echo "<button><a href='signUp.php'>Sign Out</a></button>";
+    } else {
 
-				/*echo $randomString;
-				echo "<br>";
-				#print_r($resultArray);
-
-				
-				rsort($array); 
-
-				print_r($array);
-                */
-			?>
-			</div>
-		</div>
-		<form method="POST" action="">
-			<div class="answer-block">
-				<div class="answer">Type your answer here:</div>
-				<div class="answer-values">
-					<input type="text" name="inputAnswer1" id="inputAnswer1">
-					<input type="text" name="inputAnswer2" id="inputAnswer2">
-					<input type="text" name="inputAnswer3" id="inputAnswer3">
-					<input type="text" name="inputAnswer4" id="inputAnswer4">
-					<input type="text" name="inputAnswer5" id="inputAnswer5">
-					<input type="text" name="inputAnswer6" id="inputAnswer6">
-				</div>
-			</div>
-			<div class="btns-block">
-				<input type="submit" name="submit" id="submit" value="Submit">
-				<input type="reset" value="Reset" >
-			</div>
-		</form>
-	</div>
-
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-  </body>
-</html>
+        // show error message with button to try again or sign out
+        echo "<p>Sorry, your answer is incorrect. Please try again.</p>";
+        echo "<button><a href='level6.php'>Try Again</a></button>";
+        echo "<button><a href='signUp.php'>Sign Out</a></button>";
+    }
+} else {
+	
+    // show the form to the user
+    echo "<p>Identify the minimum and maximum numbers from the following numbers:</p>";
+    echo "<p>" . implode(", ", $numbers) . "</p>";
+    echo "<form method='POST'>";
+    echo "<label for='min_number'>Minimum Number:</label>";
+    echo "<input type='number' id='min_number' name='min_number' min='0' max='100' required>";
+    echo "<br>";
+    echo "<label for='max_number'>Maximum Number:</label>";
+    echo "<input type='number' id='max_number' name='max_number' min='0' max='100' required>";
+    echo "<br>";
+    echo "<input type='submit' name='submit' value='Submit'>";
+    echo "</form>";
+    // show buttons to sign out or stop the session
+   
+    echo "<button><a href='index.php'>Login</a></button>";
+}
+?>

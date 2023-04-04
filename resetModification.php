@@ -1,80 +1,62 @@
-<!DOCTYPE html>
-<html>
+<?php
 
-<head>
-    <title>Password Modification Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-</head>
+include "connect.php";
+include "functions.php";
 
+if(!isset($_POST["modifyBtn"])){
+    $inputUsername = NULL;
+    $inputPassword = NULL;
+    $inputConfirmPassword = NULL;
+}
 
-<body>
-    <br /><br /><br /><br /><br />
+if(isset($_POST["modifyBtn"])){
+    $inputUsername = $_POST["inputUsername"];
    
-    <?php
-    // Connect to the database
-    $host = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "kidsGames";
-    $conn = mysqli_connect($host, $username, $password, $dbname);
+    $inputPassword = $_POST["inputPassword"];
+    $inputConfirmPassword = $_POST["inputConfirmPassword"];
 
-    // Check if the form has been submitted
-    if(isset($_POST["createBtn"]))
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        
-        // Retrieve the form data
-        $username = $_POST["username"];
-        $password = $_POST["password"];
-        $confirm_password = $_POST["confirm_password"];
+    // is empty
+    if($inputUsername == ""){
+        echo "<script>alert(\"" . getErrorMessages("no-username") . "\")</script>";
+    }
+   
+    elseif($inputPassword == ""){
+        echo "<script>alert(\"" . getErrorMessages("no-pass") . "\")</script>";
+    }
 
-        $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*])[A-Za-z\d@#$%^&*]{8,}$/';
-
-        //Validate the password against the regular expression
-        if (preg_match($pattern, $password)) {
-            echo "<b><p style='color:red;' >" ."Success!"."</p></b>";
-
-            // Check if the entered username exists in the player table
-            $sql = "SELECT registrationOrder FROM player WHERE userName='$username'";
-            $result = mysqli_query($conn, $sql);
-            if (mysqli_num_rows($result) == 1) {
-                $row = mysqli_fetch_assoc($result);
-                $registrationOrder = $row["registrationOrder"];
-
-                // Check if the new password and confirm password match
-                if ($password == $confirm_password) {
-                    // Hash the new password
-                    $passCode = password_hash($password, PASSWORD_DEFAULT);
-
-                    // Update the authenticator table with the new password hash
-                    $sql = "UPDATE authenticator SET passCode='$passCode' WHERE registrationOrder=$registrationOrder";
-                    if (mysqli_query($conn, $sql)) {
-
-                        echo "<b><p style='color:green;'>" . "Password reset successful." . "</p></b>";
-                    } else {
-                        echo "<b><p style='color:red;'>" . "Error updating password: " . mysqli_error($conn) . "</p></b>";
+    elseif($inputConfirmPassword == ""){
+        echo "<script>alert(\"" . getErrorMessages("no-confirm-pass") . "\")</script>";
+    }
+    else{
+        // check username exist
+       
+        if(!checkUsername($inputUsername, $connection)){
+            echo "<script>alert(\"" . getErrorMessages("username-no-exist") . "\")</script>";
+        }
+        else{
+         
+                // password and confirm password
+                if(matchPassword($inputPassword, $inputConfirmPassword)){
+                    // ok
+                    $sql = "UPDATE authenticator SET passCode = \"$inputPassword\" WHERE registrationOrder = (SELECT id FROM player WHERE userName = \"$inputUsername\")";
+                
+                    if($connection->query($sql)  === TRUE){
+                        echo "<script>alert(\"" . "Password modified successfully." . "\")</script>";
                     }
-                } else {
-                    echo "<b><p style='color:red;' >" . "New password and confirm password do not match.<br/>" . "</p></b>";
-                    echo '<a href="modifyPassword.php">Go Back to Password Reset Page</a>';
+                    else{
+                        echo "<script>alert(\"" . "Password cannot be modified. Please try again" . "\")</script>";
+                    }
+                }
+                else{
+                    echo "<script>alert(" . getErrorMessages("no-same-pass") . ")</script>";
                 }
             }
-        } else {
-            echo "<b><p style='color:red;'>" . "Username not found.<br/>" . "</p></b>";
-            echo '<a href="modifyPassword.php">Go Back to Password Reset Page</a>';
         }
-    } else {
-        // Password does not meet requirements
-        echo "<b><p style='color:red;' >" ."Password must be at least 8 characters long and include at 
-        least one uppercase letter, one lowercase letter, one number, and one special character (@#$%^&*)"."</p></b>";
-        echo '<a href="modifyPassword.php">Go Back to Password Reset Page</a>';
     }
-    mysqli_close($conn);
-    ?>
-    <br />
-    <b><a href="index.php">Go To Login Page</a></b>
-    <br /><br /><br /><br /><br />
-   
 
-</body>
 
-</html>
+$connection->close();
+
+require_once "modifyPassword.php";
+
+?>   
