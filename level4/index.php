@@ -14,6 +14,10 @@
 
     <?php
         include "../navBar.php";
+
+        if (!isset($_SESSION['username'])) {
+			die('ERROR: Please, <a href="../index.php">Login</a> first to be able to access this page.');
+		}
     ?>
 
     <div class="wrapper container">

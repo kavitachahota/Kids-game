@@ -16,6 +16,10 @@
         include "../navBar.php";
 
         $_SESSION["currentLevel"] = 1;
+
+        if (!isset($_SESSION['username'])) {
+			die('ERROR: Please, <a href="../index.php">Login</a> first to be able to access this page.');
+		}
         
     ?>
 
