@@ -58,14 +58,13 @@
 			<input type="password" class="form-control" id="inputPassword" name="inputPassword">
 		</div>
 		<button type="submit" class="btn btn-primary" name="signInBtn" id="signInBtn">Sign-In</button>
-		<a href="signup.php"><button type="button" class="btn btn-primary" name="signUpBtn" id="signUpBtn"> Sign-Up</button></a>
+		<a href="signupForm.php"><button type="button" class="btn btn-primary" name="signUpBtn" id="signUpBtn"> Sign-Up</button></a>
 		
 
 	</form>
 
 
 	<?php
-
 		include "footer.php";
 	?>
 

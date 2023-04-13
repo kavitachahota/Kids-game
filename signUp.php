@@ -14,7 +14,7 @@
 	
 
 	<h2 class="text-center">Sign Up</h2>
-	<form class="container" method="POST" action="signupResult.php">
+	<form class="container" method="POST" action="signupForm.php">
 		<div class="mb-3">
 			<label for="inputFirstName" class="form-label">First Name</label>
 			<input type="text" class="form-control" id="inputFirstName" name="inputFirstName" value="<?php echo $inputFirstName; ?>">
